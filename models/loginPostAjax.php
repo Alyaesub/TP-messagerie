@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['email']) || !isset($
   exit();
 }
 
-$host = 'localhost';
-$dbname = 'tp_authentification';
-$username = 'user_php';
+$host = 'localhost'; // Ou l'adresse de ton serveur MySQL
+$dbname = 'TP_messagerie';
+$username = 'user_php_messagerie';
 $password = '3f7zhhRn4NH69R';
-$port = 3306;
+$port = 8889;
 
 $response = [];
 
