@@ -1,3 +1,12 @@
+<?php
+session_start();
+// Si l'utilisateur est déjà connecté, rediriger vers le profil
+if (isset($_SESSION['user'])) {
+  header('Location: /views/profilUsers.php');
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,15 +24,6 @@
   <!-- Core theme JS-->
   <script src="../js/scripts.js" defer></script>
 </head>
-
-<?php
-session_start();
-// Si l'utilisateur est déjà connecté, rediriger vers le profil
-if (isset($_SESSION['user'])) {
-  header('Location: /views/profilUsers.php');
-  exit();
-}
-?>
 
 <body>
   <div class="d-flex" id="wrapper">

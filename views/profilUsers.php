@@ -1,3 +1,25 @@
+<?php
+session_start();
+include_once '../config/db.php';
+// Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+if (!isset($_SESSION['user'])) {
+  header('Location: login.php');
+  exit();
+}
+// Sinon, affichez le profil
+//Ce code sert à récupérer et vérifier les informations de l’utilisateur actuellement connecté. 
+$idUser = $_SESSION['user']['idUser'];
+$sql = "SELECT * FROM users WHERE idUser = :idUser";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['idUser' => $idUser]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$user) {
+  die("Utilisateur non trouvé.");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,17 +38,6 @@
 
   <title>Mon profile</title>
 </head>
-
-<?php
-session_start();
-// Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-if (!isset($_SESSION['user'])) {
-  header('Location: login.php');
-  exit();
-}
-// Sinon, affichez le profil
-?>
-
 
 <body>
   <div class="d-flex" id="wrapper">
@@ -91,6 +102,30 @@ if (!isset($_SESSION['user'])) {
             <li>Contact 2</li>
             <li>Contact 3</li>
           </ul>
+        </section>
+        <section class="envoyer-message">
+          <h2>Envoyer un message</h2>
+          <form method="POST" action="sendMessage.php">
+            <div class="form-group">
+              <label for="recipient">Envoyer à</label>
+              <select name="recipient_id" id="recipient" class="form-control">
+                <option value="">Sélectionnez un contact</option>
+                <?php
+                // Re-run query to get contacts for the form
+                $sql_contacts_form = "SELECT DISTINCT u.* FROM users u JOIN messages m ON (u.idUser = m.sender_id OR u.idUser = m.recipient_id) WHERE u.idUser != $user_id";
+                $result_contacts_form = mysqli_query($conn, $sql_contacts_form);
+                while ($row = mysqli_fetch_assoc($result_contacts_form)) {
+                ?>
+                  <option value="<?php echo $row['idUser']; ?>"><?php echo $row['name'] . ' ' . $row['surname']; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="messageContent">Message</label>
+              <textarea name="messageContent" id="messageContent" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+          </form>
         </section>
       </div>
     </div>
