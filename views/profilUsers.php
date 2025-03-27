@@ -5,18 +5,36 @@ include_once '../config/db.php';
 if (!isset($_SESSION['user'])) {
   header('Location: login.php');
   exit();
+  // Sinon, affichez le profil
 }
-// Sinon, affichez le profil
-//Ce code sert à récupérer et vérifier les informations de l’utilisateur actuellement connecté. 
 $idUser = $_SESSION['user']['idUser'];
-$sql = "SELECT * FROM users WHERE idUser = :idUser";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['idUser' => $idUser]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$user) {
-  die("Utilisateur non trouvé.");
-}
+// Récupération des messages reçus
+$sql_received = "SELECT m.*, u.name AS senderName, u.surname AS senderSurname 
+                FROM messages m 
+                JOIN users u ON m.sender_id = u.idUser 
+                WHERE m.recipient_id = :user_id 
+                ORDER BY m.sent_at DESC";
+$stmt_received = $pdo->prepare($sql_received);
+$stmt_received->execute(['user_id' => $idUser]);
+$messagesReceived = $stmt_received->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupération des messages envoyés
+$sql_sent = "SELECT m.*, u.name AS recipientName, u.surname AS recipientSurname 
+            FROM messages m 
+            JOIN users u ON m.recipient_id = u.idUser 
+            WHERE m.sender_id = :user_id 
+            ORDER BY m.sent_at DESC";
+$stmt_sent = $pdo->prepare($sql_sent);
+$stmt_sent->execute(['user_id' => $idUser]);
+$messagesSent = $stmt_sent->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupération des contacts (utilisateurs ayant échangé avec l'utilisateur connecté)
+// Récupération de tous les utilisateurs, sauf l'utilisateur connecté
+$sql_contacts_form = "SELECT * FROM users WHERE idUser != :user_id";
+$stmt_contacts_form = $pdo->prepare($sql_contacts_form);
+$stmt_contacts_form->execute(['user_id' => $idUser]);
+$contacts_form = $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -82,47 +100,54 @@ if (!$user) {
         <section class="messages-recus">
           <h2>Messages Reçus</h2>
           <ul>
-            <li>Message reçu 1</li>
-            <li>Message reçu 2</li>
-            <li>Message reçu 3</li>
+            <?php foreach ($messagesReceived as $msg): ?>
+              <li>
+                De <?php echo htmlspecialchars($msg['senderName'] . " " . $msg['senderSurname']); ?> :
+                <?php echo htmlspecialchars($msg['content']); ?>
+                <small>(<?php echo $msg['sent_at']; ?>)</small>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </section>
         <section class="messages-envoyes">
           <h2>Messages Envoyés</h2>
           <ul>
-            <li>Message envoyé 1</li>
-            <li>Message envoyé 2</li>
-            <li>Message envoyé 3</li>
+            <?php foreach ($messagesSent as $msg): ?>
+              <li>
+                À <?php echo htmlspecialchars($msg['recipientName'] . " " . $msg['recipientSurname']); ?> :
+                <?php echo htmlspecialchars($msg['content']); ?>
+                <small>(<?php echo $msg['sent_at']; ?>)</small>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </section>
         <section class="contacts">
           <h2>Contacts</h2>
           <ul>
-            <li>Contact 1</li>
-            <li>Contact 2</li>
-            <li>Contact 3</li>
+            <?php foreach ($contacts_form as $contact): ?>
+              <li>
+                <?php echo htmlspecialchars($contact['name'] . " " . $contact['surname']); ?>
+              </li>
+            <?php endforeach; ?>
           </ul>
         </section>
         <section class="envoyer-message">
           <h2>Envoyer un message</h2>
           <form method="POST" action="sendMessage.php">
             <div class="form-group">
-              <label for="recipient">Envoyer à</label>
+              <label for="recipient_id">Envoyer à :</label>
               <select name="recipient_id" id="recipient" class="form-control">
                 <option value="">Sélectionnez un contact</option>
-                <?php
-                // Re-run query to get contacts for the form
-                $sql_contacts_form = "SELECT DISTINCT u.* FROM users u JOIN messages m ON (u.idUser = m.sender_id OR u.idUser = m.recipient_id) WHERE u.idUser != $user_id";
-                $result_contacts_form = mysqli_query($conn, $sql_contacts_form);
-                while ($row = mysqli_fetch_assoc($result_contacts_form)) {
-                ?>
-                  <option value="<?php echo $row['idUser']; ?>"><?php echo $row['name'] . ' ' . $row['surname']; ?></option>
-                <?php } ?>
+                <?php foreach ($contacts_form as $row): ?>
+                  <option value="<?php echo htmlspecialchars($row['idUser']); ?>">
+                    <?php echo htmlspecialchars($row['name'] . ' ' . $row['surname']); ?>
+                  </option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="form-group">
-              <label for="messageContent">Message</label>
-              <textarea name="messageContent" id="messageContent" class="form-control"></textarea>
+              <label for="messageContent">Message :</label>
+              <textarea name="messageContent" id="messageContent" class="form-control">Rentrez votre message</textarea>
             </div>
             <button type="submit" class="btn btn-primary">Envoyer</button>
           </form>
