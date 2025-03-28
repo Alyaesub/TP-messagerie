@@ -10,39 +10,59 @@ if (!isset($_SESSION['user'])) {
 $idUser = $_SESSION['user']['idUser'];
 
 // Récupération des messages reçus
-$sql_received = "SELECT m.*, u.name AS senderName, u.surname AS senderSurname 
+function getReceivedMessages($userId)
+{
+  global $pdo;
+  $sql = "SELECT m.*, u.name AS senderName, u.surname AS senderSurname 
                 FROM messages m 
                 JOIN users u ON m.sender_id = u.idUser 
                 WHERE m.recipient_id = :user_id 
                 ORDER BY m.sent_at DESC";
-$stmt_received = $pdo->prepare($sql_received);
-$stmt_received->execute(['user_id' => $idUser]);
-$messagesReceived = $stmt_received->fetchAll(PDO::FETCH_ASSOC);
+  $stmt_received = $pdo->prepare($sql);
+  $stmt_received->execute(['user_id' => $userId]);
+  return $stmt_received->fetchAll(PDO::FETCH_ASSOC);
+}
+$messagesReceived = getReceivedMessages($idUser);
 
-// Récupération des messages envoyés
-$sql_sent = "SELECT m.*, u.name AS recipientName, u.surname AS recipientSurname 
+// Récupération des messages envoyés 
+function getSentMessages($userId)
+{
+  global $pdo;
+  $sql = "SELECT m.*, u.name AS recipientName, u.surname AS recipientSurname 
             FROM messages m 
             JOIN users u ON m.recipient_id = u.idUser 
             WHERE m.sender_id = :user_id 
             ORDER BY m.sent_at DESC";
-$stmt_sent = $pdo->prepare($sql_sent);
-$stmt_sent->execute(['user_id' => $idUser]);
-$messagesSent = $stmt_sent->fetchAll(PDO::FETCH_ASSOC);
+  $stmt_sent = $pdo->prepare($sql);
+  $stmt_sent->execute(['user_id' => $userId]);
+  return $stmt_sent->fetchAll(PDO::FETCH_ASSOC);
+}
+$messagesSent = getSentMessages($idUser);
 
 //recupére uniquement les utilisateur avec qui il y a u echange de message
-$sql_contacts_conversations = " SELECT DISTINCT u.* FROM users u JOIN messages m 
+function getContactsConversations($userId)
+{
+  global $pdo;
+  $sql = " SELECT DISTINCT u.* FROM users u JOIN messages m 
                                 ON (u.idUser = m.sender_id AND m.recipient_id = :user_id)
                                 OR (u.idUser = m.recipient_id AND m.sender_id = :user_id)
                                 WHERE u.idUser != :user_id";
-$stmt_contacts_conversations = $pdo->prepare($sql_contacts_conversations);
-$stmt_contacts_conversations->execute(['user_id' => $idUser]);
-$contacts_conversations = $stmt_contacts_conversations->fetchAll(PDO::FETCH_ASSOC);
+  $stmt_contacts_conversations = $pdo->prepare($sql);
+  $stmt_contacts_conversations->execute(['user_id' => $userId]);
+  return $stmt_contacts_conversations->fetchAll(PDO::FETCH_ASSOC);
+}
+$contacts_conversations = getContactsConversations($idUser);
 
-// Récupération de tous les utilisateurs, sauf l'utilisateur connecté pour les afficher dans la section "envoyer-message" (dans le meunu deroulant)
-$sql_contacts_form = "SELECT * FROM users WHERE idUser != :user_id";
-$stmt_contacts_form = $pdo->prepare($sql_contacts_form);
-$stmt_contacts_form->execute(['user_id' => $idUser]);
-$contacts_form = $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
+// Récupération de tous les utilisateurs, sauf l'utilisateur connecté pour les afficher dans la section "envoyer-message" (dans le meunu deroulant) 
+function getContacts($userId)
+{
+  global $pdo;
+  $sql = "SELECT * FROM users WHERE idUser != :user_id";
+  $stmt_contacts_form = $pdo->prepare($sql);
+  $stmt_contacts_form->execute(['user_id' => $userId]);
+  return $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
+}
+$contacts_form = getContacts($idUser);
 ?>
 
 

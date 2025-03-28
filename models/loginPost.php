@@ -1,12 +1,7 @@
 <?php
 
 session_start();
-
-$host = 'localhost'; // Ou l'adresse de ton serveur MySQL
-$dbname = 'TP_messagerie';
-$username = 'user_php_messagerie';
-$password = '3f7zhhRn4NH69R';
-$port = 8889;
+include_once '../config/db.php';
 
 echo "Tentative de connexion avec l'utilisateur : $username";
 

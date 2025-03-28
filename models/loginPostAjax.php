@@ -1,17 +1,13 @@
 <?php
 session_start();
+include_once '../config/db.php';
 header('Content-Type: application/json');
+
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['email']) || !isset($_POST['password'])) {
   echo json_encode(['status' => 'error', 'message' => 'Requête invalide']);
   exit();
 }
-
-$host = 'localhost'; // Ou l'adresse de ton serveur MySQL
-$dbname = 'TP_messagerie';
-$username = 'user_php_messagerie';
-$password = '3f7zhhRn4NH69R';
-$port = 8889;
 
 $response = [];
 
