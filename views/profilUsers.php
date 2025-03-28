@@ -22,6 +22,7 @@ function getReceivedMessages($userId)
   $stmt_received->execute(['user_id' => $userId]);
   return $stmt_received->fetchAll(PDO::FETCH_ASSOC);
 }
+// Récupération des messages reçus
 $messagesReceived = getReceivedMessages($idUser);
 
 // Récupération des messages envoyés 
