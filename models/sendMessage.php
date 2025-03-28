@@ -17,6 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['messageContent']) && i
     'content' => $_POST['messageContent']
   ]);
   // Redirection pour éviter une soumission multiple
-  header("Location: profilUsers.php");
+  header("Location: ../views/profilUsers.php");
   exit();
 }

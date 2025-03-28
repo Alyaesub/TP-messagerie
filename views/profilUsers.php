@@ -29,8 +29,16 @@ $stmt_sent = $pdo->prepare($sql_sent);
 $stmt_sent->execute(['user_id' => $idUser]);
 $messagesSent = $stmt_sent->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupération des contacts (utilisateurs ayant échangé avec l'utilisateur connecté)
-// Récupération de tous les utilisateurs, sauf l'utilisateur connecté
+//recupére uniquement les utilisateur avec qui il y a u echange de message
+$sql_contacts_conversations = " SELECT DISTINCT u.* FROM users u JOIN messages m 
+                                ON (u.idUser = m.sender_id AND m.recipient_id = :user_id)
+                                OR (u.idUser = m.recipient_id AND m.sender_id = :user_id)
+                                WHERE u.idUser != :user_id";
+$stmt_contacts_conversations = $pdo->prepare($sql_contacts_conversations);
+$stmt_contacts_conversations->execute(['user_id' => $idUser]);
+$contacts_conversations = $stmt_contacts_conversations->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupération de tous les utilisateurs, sauf l'utilisateur connecté pour les afficher dans la section "envoyer-message" (dans le meunu deroulant)
 $sql_contacts_form = "SELECT * FROM users WHERE idUser != :user_id";
 $stmt_contacts_form = $pdo->prepare($sql_contacts_form);
 $stmt_contacts_form->execute(['user_id' => $idUser]);
@@ -124,7 +132,7 @@ $contacts_form = $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
         <section class="contacts">
           <h2>Contacts</h2>
           <ul>
-            <?php foreach ($contacts_form as $contact): ?>
+            <?php foreach ($contacts_conversations as $contact): ?> <!-- $messagesSent  -->
               <li>
                 <?php echo htmlspecialchars($contact['name'] . " " . $contact['surname']); ?>
               </li>
@@ -133,7 +141,7 @@ $contacts_form = $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
         </section>
         <section class="envoyer-message">
           <h2>Envoyer un message</h2>
-          <form method="POST" action="sendMessage.php">
+          <form method="POST" action="../models/sendMessage.php">
             <div class="form-group">
               <label for="recipient_id">Envoyer à :</label>
               <select name="recipient_id" id="recipient" class="form-control">
