@@ -94,7 +94,7 @@ $contacts_form = $stmt_contacts_form->fetchAll(PDO::FETCH_ASSOC);
                   <a class="dropdown-item" href="login.php">Ce connecter</a>
                   <a class="dropdown-item" href="register.php">Créer un compte</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="../controllers/logout.php">Ce déconnecter</a>
+                  <a class="dropdown-item" href="../controllers/logoutController.php">Ce déconnecter</a>
                 </div>
               </li>
             </ul>
