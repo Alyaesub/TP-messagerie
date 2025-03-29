@@ -1,6 +1,20 @@
 TP - Messagerie
 
+TP Messagerie est une application de messagerie développée dans le cadre d’un projet pratique. Elle illustre la mise en œuvre de concepts essentiels de communication en temps réel, la gestion des utilisateurs et l’échange de messages. Ce document présente une vue d’ensemble du projet ainsi que les étapes pour son installation et sa contribution.
+
+Table des matières
+• Introduction
+• Fonctionnalités
+• Technologies utilisées
+• Installation
+• Utilisation
+• Contribution
+• Licence
+• Contact
+
 Objectif du projet :
+
+Le projet TP Messagerie a pour objectif de fournir une plateforme de communication simple, intuitive et efficace. Développé dans le cadre d’un TP, ce projet permet d’expérimenter des techniques modernes de développement web et la gestion des communications en temps réel.
 
 Créer une application de messagerie simple et sécurisée avec :
 
@@ -62,6 +76,15 @@ Sauvegarde de la base :
 -   Système de notifications
 -   Back-office pour gérer les avis/messages
 -   Sécurité avancée (hashing, tokens...)
+
+---
+
+Installation
+
+Prérequis
+• Node.js (ou une version adaptée en fonction de la stack utilisée)
+• Git pour cloner le dépôt
+• Une base de données compatible (si nécessaire)
 
 ---
 
