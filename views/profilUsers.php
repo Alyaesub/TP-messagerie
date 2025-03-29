@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include_once '../config/db.php';
 // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
 if (!isset($_SESSION['user'])) {
@@ -7,18 +8,16 @@ if (!isset($_SESSION['user'])) {
   exit();
   // Sinon, affichez le profil
 }
+
 $idUser = $_SESSION['user']['idUser'];
 
 require_once '../controllers/messagesController.php';
 // Récupération des messages reçus
 $messagesReceived = getReceivedMessages($idUser);
-
 // Récupération des messages envoyés 
 $messagesSent = getSentMessages($idUser);
-
 //recupére uniquement les utilisateur avec qui il y a u echange de message
 $contacts_conversations = getContactsConversations($idUser);
-
 // Récupération de tous les utilisateurs, sauf l'utilisateur connecté pour les afficher dans la section "envoyer-message" (dans le meunu deroulant) 
 $contacts_form = getContacts($idUser);
 ?>
@@ -95,6 +94,7 @@ $contacts_form = getContacts($idUser);
             <?php endforeach; ?>
           </ul>
         </section>
+        <!--form des envoie des messages -->
         <section class="messages-envoyes">
           <h2>Messages Envoyés</h2>
           <ul>
@@ -117,6 +117,7 @@ $contacts_form = getContacts($idUser);
             <?php endforeach; ?>
           </ul>
         </section>
+        <!--section historique des message envoyé -->
         <section class="envoyer-message">
           <h2>Envoyer un message</h2>
           <form method="POST" action="../models/sendMessage.php">
@@ -133,10 +134,56 @@ $contacts_form = getContacts($idUser);
             </div>
             <div class="form-group">
               <label for="messageContent">Message :</label>
-              <textarea name="messageContent" id="messageContent" class="form-control">Rentrez votre message</textarea>
+              <textarea name="messageContent" id="messageContent" class="form-control" placeholder="Rentrez votre message..."></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Envoyer</button>
           </form>
+        </section>
+        <!--form des envoie pour les avis -->
+        <section class="envoyer-avis">
+          <h2>Laisser nous votre avis sur notre messagerie</h2>
+          <form method="POST" action="../models/ajouterAvis.php">
+            <div class="form-group">
+              <label for="note">Note (1 à 5) :</label>
+              <select name="note" id="note" class="form-control" required>
+                <option value="">-- Choisissez une note --</option>
+                <option value="1">1 - Mauvais</option>
+                <option value="2">2</option>
+                <option value="3">3 - Moyen</option>
+                <option value="4">4</option>
+                <option value="5">5 - Excellent</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="commentaire">Commentaire :</label>
+              <textarea name="commentaire" id="commentaire" class="form-control" placeholder="Votre avis en quelques mots..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Envoyer l'avis</button>
+          </form>
+        </section>
+        <!--affiche les avis -->
+        <section class="liste-avis mt-4">
+          <h2>Avis des utilisateurs</h2>
+          <ul>
+            <?php
+            $fichier = '../data/avis.json';
+            if (file_exists($fichier)) {
+              $avisListe = json_decode(file_get_contents($fichier), true);
+              foreach ($avisListe as $avis) {
+                if ($avis['idUser'] == $idUser) {
+                  echo '<li>';
+                  echo 'Vous avez mis une note de ';
+                  echo '<strong>' . htmlspecialchars($avis['note']) . '/5</strong> ';
+                  echo 'avec le commentaire : "' . htmlspecialchars($avis['commentaire']) . '"';
+                  echo ' <small>(' . htmlspecialchars($avis['date']) . ')</small>';
+                  echo '</li>';
+                }
+              }
+            } else {
+              echo '<li>Aucun avis pour le moment.</li>';
+            }
+            ?>
+          </ul>
         </section>
       </div>
     </div>

@@ -1,0 +1,14 @@
+[
+    {
+        "idUser": 2,
+        "note": 4,
+        "commentaire": "teste avis",
+        "date": "2025-03-29 13:45:21"
+    },
+    {
+        "idUser": 5,
+        "note": 5,
+        "commentaire": "test 2 \"bonne appli chef \"",
+        "date": "2025-03-29 14:02:51"
+    }
+]
