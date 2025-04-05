@@ -57,7 +57,7 @@
       <!-- Page content-->
       <div class="container-fluid">
         <h1>Inscription</h1>
-        <form class="formulaire" action="../models/registerPost.php" method="POST">
+        <form class="formulaire" action="../controllers/registerPost.php" method="POST">
           <label for="name">Nom :</label>
           <input type="text" name="name"><br><br>
 

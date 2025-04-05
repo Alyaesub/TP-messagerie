@@ -9,7 +9,7 @@ CREATE TABLE users (
 );
 
 
--- Création de l’utilisateur
+-- Création de l’utilisateur administrateur
 CREATE USER 'user_php_messagerie'@'localhost' IDENTIFIED BY '3f7zhhRn4NH69R';
 GRANT SELECT, INSERT, UPDATE, DELETE ON tp_authentification.users TO 'user_php_messagerie'@'localhost';
 

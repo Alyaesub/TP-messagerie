@@ -1,4 +1,5 @@
 <?php
+//feuille de logique pour ajouter un avis
 session_start();
 
 // Vérifie que l'utilisateur est connecté et que les champs sont bien remplis

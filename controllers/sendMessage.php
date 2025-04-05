@@ -1,5 +1,5 @@
 <?php
-
+// feuille de logique pour envoyer un message
 session_start();
 include_once '../config/db.php';
 

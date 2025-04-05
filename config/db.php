@@ -1,8 +1,9 @@
 <?php
+//fichier qui sert a la connexion a la base de données
 $host = 'localhost'; // ou l'adresse de ton serveur MySQL
 $dbname = 'TP_messagerie';
-$username = 'user_php_messagerie';
-$password = '3f7zhhRn4NH69R';
+$username = 'user_php_messagerie'; //name d'utilisateur que j'ai créé
+$password = '3f7zhhRn4NH69R'; //password de l'utilisateur que j'ai créé
 $port = 8889;
 
 try {
