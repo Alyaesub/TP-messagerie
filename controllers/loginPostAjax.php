@@ -1,4 +1,5 @@
 <?php
+//feuille de logique pour la connexion
 session_start();
 include_once '../config/db.php';
 header('Content-Type: application/json');

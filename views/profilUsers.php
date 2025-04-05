@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 
 $idUser = $_SESSION['user']['idUser'];
 
-require_once '../controllers/messagesController.php';
+require_once '../Models/MessagesController.php';
 // Récupération des messages reçus
 $messagesReceived = getReceivedMessages($idUser);
 // Récupération des messages envoyés 
@@ -120,7 +120,7 @@ $contacts_form = getContacts($idUser);
         <!--section historique des message envoyé -->
         <section class="envoyer-message">
           <h2>Envoyer un message</h2>
-          <form method="POST" action="../models/sendMessage.php">
+          <form method="POST" action="../controllers/sendMessage.php">
             <div class="form-group">
               <label for="recipient_id">Envoyer à :</label>
               <select name="recipient_id" id="recipient" class="form-control">
@@ -142,7 +142,7 @@ $contacts_form = getContacts($idUser);
         <!--form des envoie pour les avis -->
         <section class="envoyer-avis">
           <h2>Laisser nous votre avis sur notre messagerie</h2>
-          <form method="POST" action="../models/ajouterAvis.php">
+          <form method="POST" action="../controllers/ajouterAvis.php">
             <div class="form-group">
               <label for="note">Note (1 à 5) :</label>
               <select name="note" id="note" class="form-control" required>

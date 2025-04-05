@@ -64,7 +64,7 @@ if (isset($_SESSION['user'])) {
       <!-- Page content-->
       <div class="container-fluid">
         <h1>Connexion</h1>
-        <form class="formulaire" id="formulaire-login" action="../models/loginPostAjax.php" method="POST">
+        <form class="formulaire" id="formulaire-login" action="../controllers/loginPostAjax.php" method="POST">
 
           <label for="email">Adresse email :</label>
           <input type="email" name="email" required /> <br><br>

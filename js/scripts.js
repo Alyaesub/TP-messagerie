@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				console.log(pair[0] + ": " + pair[1]);
 			}
 
-			fetch("../models/loginPostAjax.php", {
+			fetch("../controllers/loginPostAjax.php", {
 				method: "POST",
 				body: formData,
 			})

@@ -1,4 +1,6 @@
 <?php
+// feuille de logique pour l'inscription
+// Ce fichier traite les données du formulaire d'inscription
 session_start();
 include_once '../config/db.php';
 
