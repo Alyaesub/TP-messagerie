@@ -14,6 +14,13 @@ Créer une application de messagerie simple et sécurisée avec :
 
 ---
 
+profils test :
+mail : alice@test.com mot de passe : password123
+mail : bob@test.com mot de passe : password123
+mail : satoshi@test.com mot de passe : password123
+
+---
+
 Technologies utilisées :
 
 -   **PHP**
