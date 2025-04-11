@@ -73,11 +73,11 @@ $password = 'MOT_DE_PASSE_BDD';
 
 Checklist :
 
--   [ ] Accès à la page `index.php`
--   [ ] Connexion / Inscription fonctionnelle
--   [ ] Envoi / réception de messages OK
--   [ ] Ajout d’avis en JSON OK
--   [ ] Lecture des avis OK
+-   [x] Accès à la page `index.php`
+-   [x] Connexion / Inscription fonctionnelle
+-   [x] Envoi / réception de messages OK
+-   [x] Ajout d’avis en JSON OK
+-   [x] Lecture des avis OK
 
 ---
 

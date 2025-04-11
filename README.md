@@ -104,19 +104,61 @@ Sauvegarde de la base :
 
 ---
 
-Documentation du déploimant :
+## 🧱 Structure technique du projet
 
--   voir le doc DEPLOY.md
+-   **Langages utilisés** :  
+    HTML / CSS / JavaScript / PHP / SQL / JSON
+
+-   **Structure du projet** :
+
+    -   `public/` (index.php, assets)
+    -   `config/` (connexion à la BDD)
+    -   `controllers/` (logique métier)
+    -   `models/` (requêtes SQL)
+    -   `views/` (interfaces utilisateurs)
+    -   `data/` (fichier SQL + avis.json)
+    -   `js/` (scripts dynamiques)
+    -   `css/` (styles)
+    -   `test/` (tests ou fichiers de dev)
+
+-   **Base de données relationnelle** (MySQL) :
+
+    -   Tables `users` et `messages` avec clés étrangères
+    -   Script SQL d’initialisation dans `data/data.sql`
+
+-   **Base de données NoSQL** :
+    -   Fichier `avis.json` pour stocker les avis utilisateurs
 
 ---
 
-À faire plus tard (si évolution) :
+## 💻 Fonctionnalités réalisées
 
--   Ajout de WebSocket pour messagerie en temps réel
--   Système de notifications
--   Back-office pour gérer les avis/messages
--   Sécurité avancée (hashing, tokens...)
+-   ✅ Inscription et connexion des utilisateurs
+-   ✅ Envoi et réception de messages
+-   ✅ Interface profil avec affichage des messages
+-   ✅ Ajout d’un avis personnel stocké en JSON
+-   ✅ Lecture dynamique des avis avec JavaScript
+-   ✅ Séparation du code en contrôleurs + vues + modèles
+-   ✅ Sécurité basique (sessions, requêtes préparées)
+-   ✅ Documentation complète (`README.md`, `deploiement.md`)
+-   ✅ Déploiement en ligne via GitHub + O2Switch
 
 ---
 
-🧑‍💻 Développé par Pascal – Code & Co Solutions
+## 🚀 Déploiement
+
+-   Projet hébergé chez **O2Switch**
+-   Déploiement automatisé via **GitHub**
+-   Import de la base via **phpMyAdmin**
+-   Configuration personnalisée dans `db.php`
+-   Test complet du fonctionnement final : ✅
+
+---
+
+## 📦 Points sur projet
+
+-   Projet 100% fonctionnel en local et en ligne
+-   Code clair, structuré et commenté
+-   Bonne séparation des responsabilités (MVC léger)
+-   Gestion d'une base SQL + JSON dans le même projet
+-   Déploiement (FTP, SSH, Git)
